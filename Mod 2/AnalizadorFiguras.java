@@ -1,5 +1,5 @@
-public class Figuras{
-    public MetricasFigura analiazador(Object figura){
+public class AnalizadorFiguras{
+    public MetricasFigura analizador(Object figura){
         //para probar
         double areaP=100.0;
         double perimetroP=40.0;
