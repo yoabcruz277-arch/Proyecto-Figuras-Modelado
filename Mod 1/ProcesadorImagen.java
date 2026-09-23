@@ -12,10 +12,17 @@ public class ProcesadorImagen {
     private boolean[][] visitados;
     private int colorFondo;
 
-    public ProcesadorImagen(BufferedImage imagen, boolean[][] visitados, int colorFondo){
-        this.imagen = imagen;
-        this.visitados = visitados;
-        this.colorFondo = colorFondo;
+    /**
+     * Constructor vacio xd.
+     */
+    public ProcesadorImagen(){
+    }
+
+    /**
+     * El principal que va a hacer toda la chamba.
+     */
+    public List<DatosFigura> procesador(String imagenBmp){
+
     }
 
     /**
