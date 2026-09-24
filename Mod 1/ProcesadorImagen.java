@@ -35,32 +35,34 @@ public class ProcesadorImagen {
      * Yo estoy haciendo este
      */
     private void cargarImagen(String rutaArchivo) throws Exception{
-        File archivo= new File (rutaArchivo);
+        File archivo = new File (rutaArchivo);
         imagen = ImageIO.read(archivo);
-       int anchoImagen= imagen.getWidth();
-        int alturaImagem=imagen.getHeight();
-        visitados= new boolean[anchoImagen][alturaImagem];
-        colorFondo=this.imagen.getRGB(0, 0);
 
+        int anchoImagen = imagen.getWidth();
+        int alturaImagem = imagen.getHeight();
+
+        visitados = new boolean[anchoImagen][alturaImagem];
+        colorFondo = this.imagen.getRGB(0, 0);
     }
 
-    private void detectaColorBFS(){
-
+    private int detectaColorFondo(){
+        
     }
 
     private void separarFondoBFS(){
 
     }
+    
     /**
      * Yo estoy haciendo este
      */
     private List<DatosFigura> extraerTodasLasFiguras(){
-        ArrayList<DatosFigura>  listafiguras= new ArrayList<>();
-        for (int y=0 ; y<imagen.getHeight();y++){
-            for (int x=0; x<imagen.getWidth();x++){
-               int color= imagen.getRGB(x, y);
+        ArrayList<DatosFigura> listafiguras = new ArrayList<>();
+        for (int y=0 ; y<imagen.getHeight(); y++){
+            for (int x=0; x<imagen.getWidth(); x++){
+                int color = imagen.getRGB(x, y);
                 if((!visitados[x][y])&&(color!=colorFondo)){
-                    DatosFigura figuraNueva= explorarFiguraBFS(x, y);
+                    DatosFigura figuraNueva = explorarFiguraBFS(x, y);
                     listafiguras.add(figuraNueva);
                 }
             }
