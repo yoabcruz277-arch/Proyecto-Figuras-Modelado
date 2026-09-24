@@ -28,7 +28,18 @@ public class ProcesadorImagen {
     /**
      * Ve haceindo los que quieras, yo hare el de detectar color y separar fondo.
      */
-    private void cargarImagen(){
+
+
+    /**
+     * Yo estoy haciendo este
+     */
+    private void cargarImagen(String rutaArchivo) throws Exception{
+        File archivo= new File (rutaArchivo);
+        imagen = ImageIO.read(archivo);
+       int anchoImagen= imagen.getWidth();
+        int alturaImagem=imagen.getHeight();
+        visitados= new boolean[anchoImagen][alturaImagem];
+        colorFondo=this.imagen.getRGB(0, 0);
 
     }
 
@@ -39,7 +50,9 @@ public class ProcesadorImagen {
     private void separarFondoBFS(){
 
     }
-
+    /**
+     * Yo estoy haciendo este
+     */
     private List<DatosFigura> extraerTodasLasFiguras(){
 
     }
