@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.ArrayList;
 import java.awt.Point;
+import java.io.File;
 /**
  * Clase principal, lee la imgaen, separa el fondo y la misma figura, saca las coordenadas 
  * para poder pasar las listas de coordenadas.
@@ -54,6 +55,18 @@ public class ProcesadorImagen {
      * Yo estoy haciendo este
      */
     private List<DatosFigura> extraerTodasLasFiguras(){
+        ArrayList<DatosFigura>  listafiguras= new ArrayList<>();
+        for (int y=0 ; y<imagen.getHeight();y++){
+            for (int x=0; x<imagen.getWidth();x++){
+               int color= imagen.getRGB(x, y);
+                if((!visitados[x][y])&&(color!=colorFondo)){
+                    DatosFigura figuraNueva= explorarFiguraBFS(x, y);
+                    listafiguras.add(figuraNueva);
+                }
+            }
+        }
+        
+        return listafiguras;
 
     }
 
