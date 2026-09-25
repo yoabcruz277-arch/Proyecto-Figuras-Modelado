@@ -1,4 +1,5 @@
 public class MetricasFigura{
+    //Johan
     public double area;
     public double perimetro;
     public int vertices;
