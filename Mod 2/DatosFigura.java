@@ -1,4 +1,9 @@
+/*
+Esta clase es solo de prueba para hacer modificaciones a ClasificadorFiguras
+(Borrar después)
+ */
 public class DatosFigura {
+
     private int numVertices;
     private double perimetro;
     private double area;
