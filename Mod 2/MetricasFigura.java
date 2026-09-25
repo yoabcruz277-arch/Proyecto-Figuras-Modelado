@@ -5,10 +5,10 @@ public class MetricasFigura{
     private double factCircularidad;
 
     public MetricasFigura(int numVertices, double perimetro, double area, double factCircularidad ){
-        this.numVertices=numVertices;
-        this.perimetro=perimetro;
-        this.area=area;
-        this.factCircularidad=factCircularidad;
+        this.numVertices = numVertices;
+        this.perimetro = perimetro;
+        this.area = area;
+        this.factCircularidad = factCircularidad;
     }
     public int getNumVertices() {
     return numVertices;

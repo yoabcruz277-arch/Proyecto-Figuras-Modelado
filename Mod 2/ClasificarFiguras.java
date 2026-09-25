@@ -25,12 +25,12 @@ public class ClasificarFiguras{
      * @return caracter correspondiente a la categoria de la figura
      * @throws IllegalArgumentException si las metricas son nulas o imposibles, como vértices negativos
      */
-    public char clasificador(DatosFigura datos){
+    public char clasificador(MetricasFigura datos){
         if(datos == null){
             throw new IllegalArgumentException("Los datos de la figura no pueden ser nulos");
         }
         if(datos.getNumVertices() < 0){
-            throw new IllegalArgumentException("El número de vértices no puede ser negativo o cero");
+            throw new IllegalArgumentException("El número de vértices no puede ser negativo");
         }
 
         if(esCirculo(datos)){
@@ -50,7 +50,7 @@ public class ClasificarFiguras{
          * @param datos
          * @return
          */
-    private boolean esCirculo(DatosFigura datos){
+    private boolean esCirculo(MetricasFigura datos){
         return datos.getFactCircularidad() >= UMBRAL_CIRCULARIDAD;
     }
 }
