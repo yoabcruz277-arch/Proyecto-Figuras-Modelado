@@ -105,6 +105,8 @@ public class ProcesadorImagen {
 
         visitados = new boolean[largo][ancho];
 
+        // Fors para recorrer los pixeles de la orilla de la imagen,
+        // esto soluciona el problema de que haya una figura que parta en 2 o mas a la imagen.
         for (int x = 0; x < ancho; x++){
             int rgb = imagen.getRGB(x,0); 
             if (colorF == rgb){
@@ -136,7 +138,37 @@ public class ProcesadorImagen {
                 visitados[ancho-1][y] = true;
             }
         }
-        // Empieza el cilco while, pero ya a mimir xd 
+
+        // Ciclo principal que recorre a los vecinos de el pixel que sacamos de la cola y los revisa,
+        // asi se sabe cual es fono y cual no.
+        // El primer elemento de la cola ya sabemos que es fondo y ya esta marcado como true.
+        // (casi me suicido pq no sabia como hacerlo true dentro del while xd).
+        while (cola.isEmpty() != true){
+            Point mainPixel = cola.poll();
+            // Crea los cuatro puntos al rededor del punto que estaba en la cola.
+            Point izq = new Point(mainPixel.x - 1, mainPixel.y);
+            Point der = new Point(mainPixel.x + 1, mainPixel.y);
+            Point arriba = new Point(mainPixel.x, mainPixel.y + 1);
+            Point abajo = new Point(mainPixel.x, mainPixel.y - 1);
+
+            // Revisa a todos los vecinos para ver cual es el que si es fondo o no.
+            if (izq.x >= 0 && izq.y >= 0 && izq.x < ancho && izq.y < largo imagen.getRGB(izq.x, izq.y) == colorF && visitados[izq.x][izq.y] == false){
+                cola.add(izq);
+                visitados[izq.x][izq.y] = true;
+            }
+            if (der.x >= 0 && der.y >= 0 && der.x < ancho && der.y < largo imagen.getRGB(der.x, der.y) == colorF && visitados[der.x][der.y] == false){
+                cola.add(der);
+                visitados[der.x][der.y] = true;
+            }
+            if (arriba.x >= 0 && arriba.y >= 0 && arriba.x < ancho && arriba.y < largo imagen.getRGB(arriba.x, arriba.y) == colorF && visitados[arriba.x][arriba.y] == false){
+                cola.add(arriba);
+                visitados[arriba.x][arriba.y] = true;
+            }
+            if (abajo.x >= 0 && abajo.y >= 0 && abajo.x < ancho && abajo.y < largo imagen.getRGB(abajo.x, abajo.y) == colorF && visitados[abajo.x][abajo.y] == false){
+                cola.add(abajo);
+                visitados[abajo.x][abajo.y] = true;
+            } 
+        } 
     }
 
     /**
