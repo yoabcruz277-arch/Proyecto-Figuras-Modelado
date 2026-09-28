@@ -80,7 +80,7 @@ public class Main{
     }
 
     /**
-     * Función auxiliar para que la salida en terminal sea legible.
+     * Función auxiliar para que la salida en terminal se imprima su categoría.
      */
     private static String traductorGoogle(char c) {
         switch (c) {
