@@ -18,7 +18,7 @@ import java.util.List;
 // MINI EXPLICACIÓN:
 // La línea base: Trazamos una recta imaginaria desde el primer punto hasta el último.
 // Medir el error: Checamos qué tan lejos está cada punto de en medio respecto a esa línea.
-// Vemos si es una recta: Si la distancia máxima no pasa de nuestro límite (epsilon), asumimos 
+// Vemos si es una recta: Si la distancia máxima no pasa de nuestro límite (epsilon=2), asumimos 
 // que todo ese tramo es una línea recta y borramos los puntos interiores.
 // Romper y repetir: Si un punto está muy lejos de la línea, entonces es una esquina y partimos 
 // el contorno justo en esa esquina y volvemos a hacer lo mismo para cada mitad.
@@ -53,8 +53,8 @@ public class FIltroRDP{
      * @return Sublista simplificada.
      */
     private List<Point> reducir(List<Point> puntos, double epsilon){
-        Point inicio=puntos.get(0);
-        Point fin=puntos.get(puntos.size()-1);
+        Point inicio = puntos.get(0);
+        Point fin = puntos.get(puntos.size()-1);
 
         int indMeutuLejos=0;
         double distMax=0.0;
