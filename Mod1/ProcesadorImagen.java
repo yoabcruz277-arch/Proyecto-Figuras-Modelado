@@ -7,6 +7,9 @@ import java.awt.Point;
 import java.io.File;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * Clase principal, lee la imgaen, separa el fondo y la misma figura, saca las
@@ -42,16 +45,10 @@ public class ProcesadorImagen {
             cargarImagen(imagenBmp);
             separarFondoBFS();
 
-            for (x = 0; x < imagen.getWidth(); x++){
-                for(x = 0; x < imagen.getHeight(); y++){
-                    if(!visitados[x][y]){
-                        resultado.add(extraerTodasLasFiguras(x, y));
+            resultado = extraerTodasLasFiguras();
 
-                    }
-                }
-            }
         }  catch(Exception e){
-            System.out.println("Esta mal, en algo :v");
+            System.out.println("Esta mal, en algo :v" + e.getMessage());
         }
 
         return resultado;
@@ -67,7 +64,7 @@ public class ProcesadorImagen {
         int anchoImagen = imagen.getWidth();
         int alturaImagen = imagen.getHeight();
 
-        visitados = new boolean[anchoImagen][alturaImagem];
+        visitados = new boolean[anchoImagen][alturaImagen];
         colorFondo = detectaColorFondo();
     }
 
@@ -130,8 +127,6 @@ public class ProcesadorImagen {
         int ancho = imagen.getWidth();
         int largo = imagen.getHeight();
 
-        visitados = new boolean[largo][ancho];
-
         // Fors para recorrer los pixeles de la orilla de la imagen,
         // esto soluciona el problema de que haya una figura que parta en 2 o mas a la imagen.
         for (int x = 0; x < ancho; x++){
@@ -145,7 +140,7 @@ public class ProcesadorImagen {
         for (int y = 1; y < largo; y++){
             int rgb = imagen.getRGB(0, y); 
             if (colorF == rgb){
-                cola.add(new Point(y,0));
+                cola.add(new Point(0, y));
                 visitados[0][y] = true;
             }
         }
@@ -179,19 +174,19 @@ public class ProcesadorImagen {
             Point abajo = new Point(mainPixel.x, mainPixel.y - 1);
 
             // Revisa a todos los vecinos para ver cual es el que si es fondo o no.
-            if (izq.x >= 0 && izq.y >= 0 && izq.x < ancho && izq.y < largo imagen.getRGB(izq.x, izq.y) == colorF && visitados[izq.x][izq.y] == false){
+            if (izq.x >= 0 && izq.y >= 0 && izq.x < ancho && izq.y < largo && imagen.getRGB(izq.x, izq.y) == colorF && visitados[izq.x][izq.y] == false){
                 cola.add(izq);
                 visitados[izq.x][izq.y] = true;
             }
-            if (der.x >= 0 && der.y >= 0 && der.x < ancho && der.y < largo imagen.getRGB(der.x, der.y) == colorF && visitados[der.x][der.y] == false){
+            if (der.x >= 0 && der.y >= 0 && der.x < ancho && der.y < largo && imagen.getRGB(der.x, der.y) == colorF && visitados[der.x][der.y] == false){
                 cola.add(der);
                 visitados[der.x][der.y] = true;
             }
-            if (arriba.x >= 0 && arriba.y >= 0 && arriba.x < ancho && arriba.y < largo imagen.getRGB(arriba.x, arriba.y) == colorF && visitados[arriba.x][arriba.y] == false){
+            if (arriba.x >= 0 && arriba.y >= 0 && arriba.x < ancho && arriba.y < largo && imagen.getRGB(arriba.x, arriba.y) == colorF && visitados[arriba.x][arriba.y] == false){
                 cola.add(arriba);
                 visitados[arriba.x][arriba.y] = true;
             }
-            if (abajo.x >= 0 && abajo.y >= 0 && abajo.x < ancho && abajo.y < largo imagen.getRGB(abajo.x, abajo.y) == colorF && visitados[abajo.x][abajo.y] == false){
+            if (abajo.x >= 0 && abajo.y >= 0 && abajo.x < ancho && abajo.y < largo && imagen.getRGB(abajo.x, abajo.y) == colorF && visitados[abajo.x][abajo.y] == false){
                 cola.add(abajo);
                 visitados[abajo.x][abajo.y] = true;
             } 

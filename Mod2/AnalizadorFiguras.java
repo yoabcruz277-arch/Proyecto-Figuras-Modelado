@@ -6,6 +6,7 @@
 
 package Mod2;
 import Mod1.DatosFigura;
+import Mod1.ProcesadorImagen;
 import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
