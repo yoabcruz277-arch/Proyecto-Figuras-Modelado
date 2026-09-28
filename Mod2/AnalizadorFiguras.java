@@ -44,9 +44,12 @@ public class AnalizadorFiguras{
 
         //Guardamos el contorno original (De Módulo 1) en la lista contornoOG
         List<Point> contornoOG = datos.getContorno();
-
-        //CÓDIGO NUEVO
-        List<Point> contornoCerrado = new ArrayList<>(contornoOG);
+        
+        //CODIGO NUEVO: utilixa el nuevo metodo (ultimo) y ordena la lista del contorno.
+        List<Point> contornoSecuencial = ordenaContorno(contornoOG);
+        
+        //Ya esta ordenada la lista 
+        List<Point> contornoCerrado = new ArrayList<>(contornoSecuencial);
         if(!contornoCerrado.isEmpty() && !contornoCerrado.get(0).equals(contornoCerrado.get(contornoCerrado.size()-1))){
             contornoCerrado.add(contornoCerrado.get(0));    //Unimos el inicio de la figura con el final
         }
@@ -89,5 +92,52 @@ public class AnalizadorFiguras{
             perimetro += p1.distance(p2);
         }
         return perimetro;
+    }
+
+    /**
+     * Ordena la lista que tiene a los puntos que consstituyen al contorno.
+     * Clona la lista desordenada para que no mueran las coordenadas.
+     * @param contornoDesordenado, es la lista que tiene a todos los puntos del contorno (desordenada).
+     * @return una lista con todos los puntos del contorno ya ordenados. 
+     */
+    private List<Point> ordenaContorno(List<Point> contornoDesordenado){
+        if (contornoDesordenado.isEmpty() || contornoDesordenado == null){
+            return new ArrayList<>;
+        }
+
+        List<Point> ordenado = new ArrayList<>();
+        List<Point> aux = new ArrayList<>(contornoDesordenado);
+
+        // Saca al primer punto desordenado y es el punto de partida para ordenar todo lo demas
+        // remove "elimina" el elemento de la lista por lo que ahora el punto 0 es el que era 1.
+        Point actual = aux.remove(0);
+        ordenado.add(actual);
+
+        // El ciclo principal que no termina hasta que aux este vacia.
+        // Se pone distanciaChica como el valor maximo para garantizar que la 
+        // primera iteracion del for sea verdadera (ve el if) y se itere toda la lista.
+        while (!aux.isEmpty()){
+            int pixelCercano = 0;
+            double distanciaChica = Double.MAX_VALUE; 
+
+            // El for que iterara sobre toda la lista aux.
+            // Saca al primer Point de aux y calcula la distancia (.distance) a el primer Point. 
+            for (i = 0; i < aux.size(); i++){
+                Point pendiente = aux.get(i);
+                double distancia = actual.distance(pendiente);
+
+                // Hace la verificacion en caso de encontrar una distancia mas pequeña.
+                // Se actualiza el pixel mas cercano.
+                if (distancia < distanciaChica)
+                distanciaChica = distancia;
+                pixelCercano = i;
+            }
+
+            // Una vez que se termina el for tenemos el indice del punto mas cercano a actual.
+            // Ese putno pasa a ser el actual y se agrega a la lista de ordenados.
+            actual = aux.remove(pixelCercano);
+            ordenado.add(actual);
+        }
+        return ordenado;
     }
 }
