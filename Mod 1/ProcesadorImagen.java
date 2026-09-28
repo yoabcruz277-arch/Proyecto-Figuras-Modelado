@@ -24,10 +24,36 @@ public class ProcesadorImagen {
     }
 
     /**
-     * El principal que va a hacer toda la chamba.
+     * Como se penso:
+     * La idea inicial de la clase era que los metodos provados hicieran
+     * la chamba por separado, uno se encargaria de cargar la imagen, otro de separar el fondo de las figuras, etc.
+     * Asi en este metodo publico (al que Sergio y Johan pueden acceder) solo le quedaria utilizar los metodos
+     * y meterlos a una lisa para tener todas las coordenadas que necesitan.
+     * 
+     * En resumen explora todo el arreglo booleano de coordenadas, lo ordena con separarFondoBFS,
+     * y a las coordenadas que sigan en false (las figuras) por medio de extraerTodasLasFiguras 
+     * "empaqueta" las coordenas de area y contorno que necesitan mis compañeros y se meten en la lista de obj DatosFifura :).
      */
     public List<DatosFigura> procesador(String imagenBmp) {
+        List<DatosFigura> resultado = new ArrayList<>();
+       
+        try{
+            cargarImagen(imagenBmp);
+            separarFondoBFS();
 
+            for (x = 0; x < imagen.getWidth(); x++){
+                for(x = 0; x < imagen.getHeight(); y++){
+                    if(!visitados[x][y]){
+                        resultado.add(extraerTodasLasFiguras(x, y));
+
+                    }
+                }
+            }
+        }  catch(Exception e){
+            System.out.println("Esta mal, en algo :v");
+        }
+
+        return resultado;
     }
 
     /**
@@ -179,7 +205,7 @@ public class ProcesadorImagen {
         for (int y = 0; y < imagen.getHeight(); y++) {
             for (int x = 0; x < imagen.getWidth(); x++) {
                 int color = imagen.getRGB(x, y);
-                if ((!visitados[x][y]) && (color != colorFondo)) {
+                if ((!visitados[x][y])) {
                     DatosFigura figuraNueva = explorarFiguraBFS(x, y);
                     listafiguras.add(figuraNueva);
                 }
@@ -190,6 +216,9 @@ public class ProcesadorImagen {
 
     }
 
+    /**
+     *  DOCUMENTALO NADA MAS.
+     */
     private DatosFigura explorarFiguraBFS(int startX, int startY) {
         ArrayList<Point> area = new ArrayList<>();
         ArrayList<Point> contorno = new ArrayList<>();
@@ -237,12 +266,13 @@ public class ProcesadorImagen {
                 else {
                     esContorno = true;
                 }
+                }
                 // Si al menos uno de los 4 vecinos fue fondo o fuera de la imagen es borde
+                // Daniel fix: Estaba bien solo que seguia dentro del for, solo lo puse fuera, asi cuanfo 
+                // al menos 1 sea fondo directamente se meta encontorno.
                 if (esContorno) {
                     contorno.add(actual);
                 }
-
-            }
         }
         String colorEncontrado = String.format("#%06X", (colorFigura & 0xFFFFFF));
         return new DatosFigura(colorEncontrado, area, contorno);
