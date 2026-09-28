@@ -5,11 +5,11 @@
  */
 
 package Mod2;
-import Mod1.DatosFigura;
-import Mod1.ProcesadorImagen;
 import java.awt.Point;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
+import Mod1.DatosFigura;
 
 public class AnalizadorFiguras{
 
@@ -47,7 +47,7 @@ public class AnalizadorFiguras{
         
         //CODIGO NUEVO: utilixa el nuevo metodo (ultimo) y ordena la lista del contorno.
         List<Point> contornoSecuencial = ordenaContorno(contornoOG);
-        
+
         //Ya esta ordenada la lista 
         List<Point> contornoCerrado = new ArrayList<>(contornoSecuencial);
         if(!contornoCerrado.isEmpty() && !contornoCerrado.get(0).equals(contornoCerrado.get(contornoCerrado.size()-1))){
@@ -102,7 +102,7 @@ public class AnalizadorFiguras{
      */
     private List<Point> ordenaContorno(List<Point> contornoDesordenado){
         if (contornoDesordenado.isEmpty() || contornoDesordenado == null){
-            return new ArrayList<>;
+            return new ArrayList<>();
         }
 
         List<Point> ordenado = new ArrayList<>();
@@ -122,7 +122,7 @@ public class AnalizadorFiguras{
 
             // El for que iterara sobre toda la lista aux.
             // Saca al primer Point de aux y calcula la distancia (.distance) a el primer Point. 
-            for (i = 0; i < aux.size(); i++){
+            for (int i = 0; i < aux.size(); i++){
                 Point pendiente = aux.get(i);
                 double distancia = actual.distance(pendiente);
 
