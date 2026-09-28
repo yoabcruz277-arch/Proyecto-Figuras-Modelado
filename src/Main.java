@@ -10,12 +10,12 @@ public class Main{
     public static void main(String[] args) {
         Scanner sc=new Scanner(System.in);
         int opcion=0;
-        System.out.println("============================================");
-        System.out.println("   Proyecto 1 - Reconocimiento de Figuras");
-        System.out.println("============================================");
+        System.out.println("==========================================================");
+        System.out.println("   Proyecto 1 - Reconocimiento de Figuras Geométricas");
+        System.out.println("==========================================================");
         System.out.println("");
         do{
-            System.out.println("\n"+"Escriba el número de la opción con la que quiere continuar" +"\n");
+            System.out.println("\n"+"Ingresa el número de opción con la que quieras continuar" +"\n");
             System.out.println("1. Analizar una imagen .bmp");
             System.out.println("2. Salir");
             System.out.println("");
@@ -23,17 +23,17 @@ public class Main{
                 opcion=sc.nextInt();
                 sc.nextLine();
             } catch(java.util.InputMismatchException e){
-                System.out.println("\n"+"Ingresa un número válido, no letras :v");
+                System.out.println("\n"+"Ingresa una opción válida");
                 sc.nextLine();
                 continue;
             }
             switch(opcion){
                 case 1:
-                    System.out.print("\n"+"Pon la ruta de la imagen .bmp a analizar: "+"\n");
+                    System.out.print("\n"+"Ingrese la ruta de la imagen .bmp a analizar: "+"\n");
                     String rutota=sc.nextLine();
                     File archivo=new File(rutota);
                     if(!archivo.exists() || !archivo.isFile()) {
-                        System.out.println("\n"+"Esta mal en algo, intenta denuevo :,v" +"\n");
+                        System.out.println("\n"+"Por favor prueba de nuevo con otro archivo" +"\n");
                         break;
                     }
                     try{
@@ -43,10 +43,10 @@ public class Main{
 
                         List<DatosFigura> figurasEncontradas = procesador.procesador(rutota);
                         if (figurasEncontradas == null || figurasEncontradas.isEmpty()) {
-                            System.out.println("\n"+"Que no hay nada xd");
+                            System.out.println("\n"+"Que no hay nada");
                             break;
                         }
-                        System.out.println("Lo que tu me esta diciendo que se encontro: " + figurasEncontradas.size() + " figura(s):"+"\n");
+                        System.out.println("Se encontraron: " + figurasEncontradas.size() + " figura(s):"+"\n");
                         for (int i = 0; i < figurasEncontradas.size(); i++){
                             DatosFigura datos=figurasEncontradas.get(i);
                             MetricasFigura metricas=analizador.analizar(datos);
@@ -68,11 +68,11 @@ public class Main{
                     }
                     break;
                     case 2:
-                    System.out.println("\n"+"Chao");
+                    System.out.println("\n"+"Vuelve pronto");
                     break;
 
                 default:
-                    System.out.println("\n"+"Esa opción no jala, intenta de nuevo :V");
+                    System.out.println("\n"+"Opción inválida, intenta de nuevo");
                 }
     
         }while(opcion!=2);
@@ -88,7 +88,7 @@ public class Main{
             case 'T': return "Triángulo";
             case 'O': return "Círculo";
             case 'X': return "Otros";
-            default: return "Yo que se brother";
+            default: return "Figura no reconocida";
         }
     }
 }

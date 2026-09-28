@@ -15,10 +15,6 @@ public class ClasificarFiguras{
     //Umbral para calcular si la figura se aproxima a un círculo
     private static final double UMBRAL_CIRCULARIDAD = 0.88; 
 
-
-
-
-
     /**
      * Clasifica una figura en O, T, C u X según sus métricas precalculadas
      * @param datos, métricas precalculadas en clases anteriores
