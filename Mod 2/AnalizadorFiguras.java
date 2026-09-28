@@ -6,6 +6,7 @@
 
 import java.awt.Point;
 import java.util.List;
+import java.util.ArrayList;
 
 public class AnalizadorFiguras{
 
@@ -41,11 +42,22 @@ public class AnalizadorFiguras{
         //Guardamos el contorno original (De Módulo 1) en la lista contornoOG
         List<Point> contornoOG = datos.getContorno();
 
+        //CÓDIGO NUEVO
+        List<Point> contornoCerrado = new ArrayList<>(contornoOG);
+        if(!contornoCerrado.isEmpty() && !contornoCerrado.get(0).equals(contornoCerrado.get(contornoCerrado.size()-1))){
+            contornoCerrado.add(contornoCerrado.get(0));    //Unimos el inicio de la figura con el final
+        }
+
+
         //Aplicamos el algoritmo de simplificación para obtener el número de vértices
         List<Point> figuraSimplificada = filtro.simplificarContorno(contornoOG, EPSILON);
 
         //Guardamos el número de vértices en numVertices obteniendo el tamaño de la lista anteriormente simplificada
         int numVertices = figuraSimplificada.size();
+        //Elimina el vertice adicional en caso de que lo haya
+        if(numVertices > 1 && figuraSimplificada.get(0).equals(figuraSimplificada.get(numVertices - 1))){
+            numVertices--;
+        }
         //Llamamos a la función auxiliar calcularPerimetro
         double perimetro = calcularPerimetro(figuraSimplificada);
         //Calculamos el facotr de circularidad
