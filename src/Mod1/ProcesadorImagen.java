@@ -13,9 +13,8 @@ import java.util.Queue;
 import javax.imageio.ImageIO;
 
 /**
- * Clase principal, lee la imgaen, separa el fondo y la misma figura, saca las
- * coordenadas
- * para poder pasar las listas de coordenadas.
+ * ProcesadorImagen, se encarga de leer la imagen, "separar" el fondo de la figura para distinguirlas
+ * y convertirla en coordenadas que se devolvéran después.
  */
 public class ProcesadorImagen {
     private BufferedImage imagen;
@@ -23,13 +22,13 @@ public class ProcesadorImagen {
     private int colorFondo;
 
     /**
-     * Constructor vacio xd.
+     * Constructor vacío
      */
     public ProcesadorImagen() {
     }
 
     /**
-     * Como se penso:
+     * Como se pensó:
      * La idea inicial de la clase era que los metodos provados hicieran
      * la chamba por separado, uno se encargaria de cargar la imagen, otro de separar el fondo de las figuras, etc.
      * Asi en este metodo publico (al que Sergio y Johan pueden acceder) solo le quedaria utilizar los metodos
@@ -56,7 +55,9 @@ public class ProcesadorImagen {
     }
 
     /**
-     * Yo estoy haciendo este
+     * Carga el archivo de imagen desde el sistema de archivos e inicializa estructuras de trabajo
+     * @param rutaArchivo, ruta local del archivo de la imagen a procesar
+     * @throws Exception Si ocurre un error de lectura de archivo o si el formato no es compatible
      */
     private void cargarImagen(String rutaArchivo) throws Exception {
         File archivo = new File(rutaArchivo);
@@ -70,7 +71,7 @@ public class ProcesadorImagen {
     }
 
     /**
-     * Como se penso:
+     * Como se pensó:
      * El problema inicial es que como las figuras se pueden dispiner sobre la imagen de forma arbitraria,
      * como sabriamos que no van a tocar una esquina de la imagen (como (0,0)), entonces primero se penso 
      * en comparar las 4 esquinas, pero que pasaria si una figura toca 2 esquinas ? Pues la ultima solucion
@@ -113,7 +114,7 @@ public class ProcesadorImagen {
     }
 
     /**
-     * Como se penso: 
+     * Como se pensó: 
      * Se tenia que separar el fondo de las figuras usando "Flood fill" que basicamente
      * toma una coordenada y a partir de ahi empieza a recorrer a sus vecinos de forma que
      * esquiva las figuraa, esto se ve reflejado en el arreglo "visitados" que se marca con
@@ -128,8 +129,8 @@ public class ProcesadorImagen {
         int ancho = imagen.getWidth();
         int largo = imagen.getHeight();
 
-        // Fors para recorrer los pixeles de la orilla de la imagen,
-        // esto soluciona el problema de que haya una figura que parta en 2 o mas a la imagen.
+        // For's para recorrer los pixeles de la orilla de la imagen,
+        // esto soluciona el problema de que haya una figura que parta en 2 o más a la imagen.
         for (int x = 0; x < ancho; x++){
             int rgb = imagen.getRGB(x,0); 
             if (colorF == rgb){
@@ -163,18 +164,17 @@ public class ProcesadorImagen {
         }
 
         // Ciclo principal que recorre a los vecinos de el pixel que sacamos de la cola y los revisa,
-        // asi se sabe cual es fono y cual no.
+        // así se sabe cual es fondo y cual no.
         // El primer elemento de la cola ya sabemos que es fondo y ya esta marcado como true.
-        // (casi me suicido pq no sabia como hacerlo true dentro del while xd).
         while (cola.isEmpty() != true){
             Point mainPixel = cola.poll();
-            // Crea los cuatro puntos al rededor del punto que estaba en la cola.
+            // Crea los cuatro puntos alrededor del punto que estaba en la cola.
             Point izq = new Point(mainPixel.x - 1, mainPixel.y);
             Point der = new Point(mainPixel.x + 1, mainPixel.y);
             Point arriba = new Point(mainPixel.x, mainPixel.y + 1);
             Point abajo = new Point(mainPixel.x, mainPixel.y - 1);
 
-            // Revisa a todos los vecinos para ver cual es el que si es fondo o no.
+            // Revisa a todos los vecinos para ver cuales son fondo o no.
             if (izq.x >= 0 && izq.y >= 0 && izq.x < ancho && izq.y < largo && imagen.getRGB(izq.x, izq.y) == colorF && visitados[izq.x][izq.y] == false){
                 cola.add(izq);
                 visitados[izq.x][izq.y] = true;
@@ -195,7 +195,12 @@ public class ProcesadorImagen {
     }
 
     /**
-     * Yo estoy haciendo este
+     * Escanea la imagen píxel por píxel para identificar y extraer todas las figuras geométricas.
+     * 
+     * Recorre la matríz de la imagen para encontrar píxeles no visitados,
+     * cada vez que encuentra un píxel de la figura, ejecuta una exploración
+     * en anchura (BFS) para aislar la figura completa y añadirla a la lista de resultados.
+     * @return una lista con las figuras encontradas en la imagen.  
      */
     private List<DatosFigura> extraerTodasLasFiguras() {
         ArrayList<DatosFigura> listafiguras = new ArrayList<>();
@@ -214,7 +219,12 @@ public class ProcesadorImagen {
     }
 
     /**
-     *  DOCUMENTALO NADA MAS.
+     * Reconstruya una figura geométrica a partir de una coordenada inicial mediante Búsqueda en Anchura (BFS).
+     * 
+     * @param startX, Coordenada x inicial donde se detectó el primer píxel
+     * @param startY, Coordenada y inicial donde se detectó el segundo píxel
+     * @return, Un objeto {@link DatosFigura} que encapsula el color HEX de la figura, 
+     * la lista completa de puntos de su área y la lista de puntos de su contorno.
      */
     private DatosFigura explorarFiguraBFS(int startX, int startY) {
         ArrayList<Point> area = new ArrayList<>();

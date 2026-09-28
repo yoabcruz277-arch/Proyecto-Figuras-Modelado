@@ -46,7 +46,7 @@ public class AnalizadorFiguras{
         //Guardamos el contorno original (De Módulo 1) en la lista contornoOG
         List<Point> contornoOG = datos.getContorno();
         
-        //CODIGO NUEVO: utilixa el nuevo metodo (ultimo) y ordena la lista del contorno.
+        //utiliza el nuevo metodo (ultimo) y ordena la lista del contorno.
         List<Point> contornoSecuencial = ordenaContorno(contornoOG);
 
         //Ya esta ordenada la lista 
