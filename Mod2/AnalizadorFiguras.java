@@ -5,11 +5,12 @@
  */
 
 package Mod2;
+import Mod1.*;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import Mod1.DatosFigura;
+
 
 public class AnalizadorFiguras{
 

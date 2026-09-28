@@ -56,11 +56,11 @@ public class Main{
                             System.out.println("===============================================");
                             System.out.println("Figura " + (i+1) + ":");
                             System.out.println(" -> Color: " +datos.getColor());
-                            System.out.println(" -> Categoría         : "+traductorGoogle(categoria) + " (" + categoria + ")");
                             System.out.println(" -> Vértices (RDP)    : "+metricas.getNumVertices());
                             System.out.println(" -> Área              : "+metricas.getArea() + " px²");
                             System.out.println(" -> Perímetro         : "+String.format("%.2f", metricas.getPerimetro()) + " px");
                             System.out.println(" -> Fact. Circularidad: "+String.format("%.4f", metricas.getFactCircularidad()));
+                            System.out.println(" -> Categoría         : "+traductorGoogle(categoria) + " (" + categoria + ")");
                             System.out.println("===============================================");
                         }
                     } catch(Exception e){
