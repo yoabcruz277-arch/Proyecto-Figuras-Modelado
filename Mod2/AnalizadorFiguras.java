@@ -56,7 +56,7 @@ public class AnalizadorFiguras{
 
 
         //Aplicamos el algoritmo de simplificación para obtener el número de vértices
-        List<Point> figuraSimplificada = filtro.simplificarContorno(contornoOG, EPSILON);
+        List<Point> figuraSimplificada = filtro.simplificarContorno(contornoCerrado, EPSILON);
 
         //Guardamos el número de vértices en numVertices obteniendo el tamaño de la lista anteriormente simplificada
         int numVertices = figuraSimplificada.size();
@@ -101,7 +101,7 @@ public class AnalizadorFiguras{
      * @return una lista con todos los puntos del contorno ya ordenados. 
      */
     private List<Point> ordenaContorno(List<Point> contornoDesordenado){
-        if (contornoDesordenado.isEmpty() || contornoDesordenado == null){
+        if (contornoDesordenado == null || contornoDesordenado.isEmpty()){
             return new ArrayList<>();
         }
 
@@ -128,9 +128,10 @@ public class AnalizadorFiguras{
 
                 // Hace la verificacion en caso de encontrar una distancia mas pequeña.
                 // Se actualiza el pixel mas cercano.
-                if (distancia < distanciaChica)
+                if (distancia < distanciaChica){
                 distanciaChica = distancia;
                 pixelCercano = i;
+                }
             }
 
             // Una vez que se termina el for tenemos el indice del punto mas cercano a actual.

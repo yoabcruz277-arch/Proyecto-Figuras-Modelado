@@ -1,15 +1,16 @@
 package Mod1;
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.util.List;
-import java.util.ArrayList;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.util.Queue;
-import java.util.LinkedList;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
+
+import javax.imageio.ImageIO;
 
 /**
  * Clase principal, lee la imgaen, separa el fondo y la misma figura, saca las
@@ -252,7 +253,7 @@ public class ProcesadorImagen {
                     }
                     // Si son del mismo color el punto actual y que se esta revisando , se agrega a
                     // ala cola el punto(vecino)
-                    else if (colorvecino == colorFigura && visitados[corX][corY] == false) {
+                    else if (colorvecino != colorFondo && visitados[corX][corY] == false) {
                         visitados[corX][corY] = true;
                         colita.add(new Point(corX, corY));
                     }
