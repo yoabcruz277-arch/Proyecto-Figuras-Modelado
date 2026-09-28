@@ -1,3 +1,4 @@
+package Mod2;
 public class MetricasFigura{
     private int numVertices;
     private double perimetro;

@@ -3,7 +3,7 @@ Esta clase contiene a las funciones auxiliares:
 -clasificador: clasifica logicamente los datos en categorias como T(Triángulo),C(Cuadrado),O(Círculo)...
 -esCirculo: compara la constante de circularidad y si es mayor devuelve true (Pues es un círculo)
 */
-
+package Mod2;
 public class ClasificarFiguras{
 
     //Constantes para las categorias de las figuras geométricas

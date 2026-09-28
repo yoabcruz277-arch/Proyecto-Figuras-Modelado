@@ -4,6 +4,8 @@
  * calcularPerimetro: calcula el perímetro recorriendo
  */
 
+package Mod2;
+import Mod1.DatosFigura;
 import java.awt.Point;
 import java.util.List;
 import java.util.ArrayList;
