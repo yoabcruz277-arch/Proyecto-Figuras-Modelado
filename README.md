@@ -11,7 +11,7 @@ Este proyecto analiza imágenes en formato `.bmp` para detectar, contar y clasif
 
 ---
 
-## 📂 Estructura del Repositorio
+##  Estructura del Repositorio
 
 ```text
 Proyecto-Figuras-Modelado/
