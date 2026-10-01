@@ -22,6 +22,7 @@ Proyecto-Figuras-Modelado/
 │   └── imagenes/       # Imágenes .bmp para las pruebas del proyecto
 ├── Reportes/           # Reportes del proyecto en PDF y casos de prueba
 └── README.md           # Guía de usuario
+```
 
 ---
 
