@@ -5,10 +5,11 @@
  */
 
 package Mod2;
-import Mod1.*;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
+import Mod1.DatosFigura;
 
 
 
@@ -59,6 +60,27 @@ public class AnalizadorFiguras{
         //Aplicamos el algoritmo de simplificación para obtener el número de vértices
         List<Point> figuraSimplificada = filtro.simplificarContorno(contornoCerrado, EPSILON);
 
+        boolean limpiando = true;
+        // CODIGO NUEVO: Limpia los vertices de los triangulos rectangulos. (solo aplica si tienen mas de 3)
+        while(limpiando && figuraSimplificada.size() > 3){
+            limpiando = false;
+            for (int i = 0; i < figuraSimplificada.size(); i++) {
+                Point p1 = figuraSimplificada.get(i);
+                Point p2 = figuraSimplificada.get((i + 1) % figuraSimplificada.size());
+                Point p3 = figuraSimplificada.get((i + 2) % figuraSimplificada.size());
+
+                double areaFalsa = Math.abs(p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y)) / 2.0;
+
+                // Si el area es menor a 30 px, significa que p2 no es una esquina real,
+                // sino un vertice falso en medio de una línea recta.
+                if (areaFalsa < 30.0) { 
+                    figuraSimplificada.remove((i + 1) % figuraSimplificada.size());
+                    limpiando = true;
+                    break;
+                }
+            }
+        }
+        
         //Guardamos el número de vértices en numVertices obteniendo el tamaño de la lista anteriormente simplificada
         int numVertices = figuraSimplificada.size();
         //Elimina el vertice adicional en caso de que lo haya
