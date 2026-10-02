@@ -13,7 +13,7 @@ public class ClasificarFiguras{
     public static final char OTROS = 'X';
 
     //Umbral para calcular si la figura se aproxima a un círculo
-    private static final double UMBRAL_CIRCULARIDAD = 0.88; 
+    private static final double UMBRAL_CIRCULARIDAD = 0.99; 
 
     /**
      * Clasifica una figura en O, T, C u X según sus métricas precalculadas
