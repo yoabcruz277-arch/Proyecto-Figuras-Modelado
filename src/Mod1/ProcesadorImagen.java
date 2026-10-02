@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Queue;
-
 import javax.imageio.ImageIO;
 
 /**
@@ -20,6 +19,14 @@ public class ProcesadorImagen {
     private BufferedImage imagen;
     private boolean[][] visitados;
     private int colorFondo;
+
+    // Distancia máxima (suma de |dR|+|dG|+|dB|) entre dos píxeles vecinos para
+    // considerar que pertenecen a la misma figura. 
+    // Si es mayor, se trata de otra figura que está pegada y ese píxel pasa a ser contorno.
+    private static final int TOLERANCIA_COLOR = 160;
+ 
+    // Componentes con menos píxeles que esto se descartan.
+    private static final int AREA_MINIMA = 400;
 
     /**
      * Constructor vacío
@@ -209,7 +216,9 @@ public class ProcesadorImagen {
                 int color = imagen.getRGB(x, y);
                 if ((!visitados[x][y])) {
                     DatosFigura figuraNueva = explorarFiguraBFS(x, y);
-                    listafiguras.add(figuraNueva);
+                    if(figuraNueva.getArea().size()>=AREA_MINIMA){ //nuevo uwu
+                        listafiguras.add(figuraNueva);
+                    }
                 }
             }
         }
@@ -241,6 +250,7 @@ public class ProcesadorImagen {
         int coordenadasy[] = { -1, 1, 0, 0 };
         while (!colita.isEmpty()) {
             Point actual = colita.poll();
+            int colorActual=imagen.getRGB(actual.x, actual.y); //nuevo uwu
             area.add(actual);
             boolean esContorno = false;
             // Ciclo for para revisar cada vecino del punto actual (arriba , abajo
@@ -261,9 +271,12 @@ public class ProcesadorImagen {
                     if (colorvecino == colorFondo) {
                         esContorno = true;
                     }
+                    else if(!mismaFigura(colorActual, colorvecino)) {   // nuevo uwu: otra figura pegada
+                        esContorno = true;
+                    }
                     // Si son del mismo color el punto actual y que se esta revisando , se agrega a
                     // ala cola el punto(vecino)
-                    else if (colorvecino != colorFondo && visitados[corX][corY] == false) {
+                    else if (visitados[corX][corY] == false) {
                         visitados[corX][corY] = true;
                         colita.add(new Point(corX, corY));
                     }
@@ -284,6 +297,17 @@ public class ProcesadorImagen {
         String colorEncontrado = String.format("#%06X", (colorFigura & 0xFFFFFF));
         return new DatosFigura(colorEncontrado, area, contorno);
 
+    }
+    /**
+     * Nuevo uwu:
+     * Decide si dos pixeles vecinos son parte de la misma figura comparando sus colores
+     * con una tolerancia (para no romper figuras con bordes y/o tonos casi iguales).
+     */
+    private boolean mismaFigura(int rgbA, int rgbB) {
+        int dr=Math.abs(((rgbA >> 16) & 0xFF)-((rgbB >> 16) & 0xFF));
+        int dg=Math.abs(((rgbA >> 8) & 0xFF)-((rgbB >> 8) & 0xFF));
+        int db=Math.abs((rgbA & 0xFF)-(rgbB & 0xFF));
+        return(dr+dg+db)<=TOLERANCIA_COLOR;
     }
 
 }

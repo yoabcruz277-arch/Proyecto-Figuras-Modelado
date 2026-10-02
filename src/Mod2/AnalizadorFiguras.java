@@ -5,11 +5,10 @@
  */
 
 package Mod2;
+import Mod1.DatosFigura;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
-import Mod1.DatosFigura;
 
 
 
@@ -117,50 +116,74 @@ public class AnalizadorFiguras{
         return perimetro;
     }
 
+    // Los 8 vecinos de un pixel, en sentido horario (en pantalla, y crece hacia abajo):
+    // E, SE, S, SO, O, NO, N, NE
+    private static final int[] DX8={ 1, 1, 0, -1, -1, -1, 0, 1 };   // nuevo uwu
+    private static final int[] DY8={ 0, 1, 1, 1, 0, -1, -1, -1 };   // nuevo uwu
+
     /**
-     * Ordena la lista que tiene a los puntos que consstituyen al contorno.
-     * Clona la lista desordenada para que no mueran las coordenadas.
-     * @param contornoDesordenado, es la lista que tiene a todos los puntos del contorno (desordenada).
-     * @return una lista con todos los puntos del contorno ya ordenados. 
+     * Ordena los puntos del contorno RECORRIENDO la orilla de la figura (trazado de contorno
+     * por vecindad de Moore), de modo que puntos consecutivos de la lista sean pixeles vecinos.
+     *
+     * Antes se usaba "el punto no visitado mas cercano", pero ese metodo se queda atascado en las
+     * esquinas (sobre todo en bases planas y en figuras pegadas al borde de la imagen): deja pixeles
+     * atras, luego "salta" cientos de pixeles hasta ellos y esos saltos el RDP los cuenta como
+     * vertices falsos (un triangulo salia con ¡¡¡¡¡¡¡¡¡¡¡6-7 vertices!!!!! y se clasificaba como "Otros").
+     *
+     * @param contornoDesordenado lista con todos los puntos del contorno (sin orden).
+     * @return los puntos del contorno ordenados a lo largo de la orilla.
      */
     private List<Point> ordenaContorno(List<Point> contornoDesordenado){
         if (contornoDesordenado == null || contornoDesordenado.isEmpty()){
             return new ArrayList<>();
         }
-
+ 
+        java.util.Set<Point> conjunto = new java.util.HashSet<>(contornoDesordenado);
+ 
+        // Punto de partida: el de arriba y, si hay empate, el de mas a la izquierda.
+        // Asi se garantiza que su vecino del oeste NO es parte de la figura.
+        Point inicio = contornoDesordenado.get(0);
+        for (Point p : contornoDesordenado){
+            if (p.y < inicio.y || (p.y == inicio.y && p.x < inicio.x)){
+                inicio = p;
+            }
+        }
+ 
         List<Point> ordenado = new ArrayList<>();
-        List<Point> aux = new ArrayList<>(contornoDesordenado);
-
-        // Saca al primer punto desordenado y es el punto de partida para ordenar todo lo demas
-        // remove "elimina" el elemento de la lista por lo que ahora el punto 0 es el que era 1.
-        Point actual = aux.remove(0);
-        ordenado.add(actual);
-
-        // El ciclo principal que no termina hasta que aux este vacia.
-        // Se pone distanciaChica como el valor maximo para garantizar que la 
-        // primera iteracion del for sea verdadera (ve el if) y se itere toda la lista.
-        while (!aux.isEmpty()){
-            int pixelCercano = 0;
-            double distanciaChica = Double.MAX_VALUE; 
-
-            // El for que iterara sobre toda la lista aux.
-            // Saca al primer Point de aux y calcula la distancia (.distance) a el primer Point. 
-            for (int i = 0; i < aux.size(); i++){
-                Point pendiente = aux.get(i);
-                double distancia = actual.distance(pendiente);
-
-                // Hace la verificacion en caso de encontrar una distancia mas pequeña.
-                // Se actualiza el pixel mas cercano.
-                if (distancia < distanciaChica){
-                distanciaChica = distancia;
-                pixelCercano = i;
+        ordenado.add(inicio);
+ 
+        Point actual = inicio;
+        int dirInicioBusqueda = 5;                       // empezamos a buscar desde el NO (venimos "del oeste")
+        int limite = conjunto.size() * 8 + 16;           // seguro contra ciclos infinitos
+ 
+        for (int paso = 0; paso < limite; paso++){
+            Point siguiente = null;
+            int dirEncontrada = -1;
+ 
+            // Se giran los 8 vecinos en sentido horario hasta toparse con otro punto del contorno.
+            for (int k = 0; k < 8; k++){
+                int d = (dirInicioBusqueda + k) % 8;
+                Point candidato = new Point(actual.x + DX8[d], actual.y + DY8[d]);
+                if (conjunto.contains(candidato)){
+                    siguiente = candidato;
+                    dirEncontrada = d;
+                    break;
                 }
             }
-
-            // Una vez que se termina el for tenemos el indice del punto mas cercano a actual.
-            // Ese putno pasa a ser el actual y se agrega a la lista de ordenados.
-            actual = aux.remove(pixelCercano);
-            ordenado.add(actual);
+ 
+            // Pixel aislado (figura de 1 solo punto): no hay nada que recorrer.
+            if (siguiente == null){
+                break;
+            }
+            // Regresamos al inicio: la vuelta esta completa.
+            if (siguiente.equals(inicio)){
+                break;
+            }
+ 
+            ordenado.add(siguiente);
+            actual = siguiente;
+            // La siguiente busqueda arranca "dos lugares atras" de la direccion en que nos movimos.
+            dirInicioBusqueda = (dirEncontrada + 6) % 8;
         }
         return ordenado;
     }
